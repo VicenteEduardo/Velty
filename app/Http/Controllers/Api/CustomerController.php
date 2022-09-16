@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\AddresseCustomer;
 use App\Models\Customer;
 use Illuminate\Http\Request;
+use App\Http\Requests\CustomerRequest;
+use Dotenv\Validator;
+use Nette\Utils\Validators;
 
 class CustomerController extends Controller
 {
@@ -25,8 +28,6 @@ class CustomerController extends Controller
                 "message" => "Unable to interpret a request. Check the syntax of the information sent."
             ], 400);
         }
-
-
     }
 
     /**
@@ -35,29 +36,31 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( Request $request)
     {
+    
 
         try {
 
-            $Customer=Customer::create([
-                'socialReason'=>$request->socialReason,
-                'fantasyName'=>$request->fantasyName,
-                'cnpj'=>$request->cnpj,
-                'phone'=>$request->phone,
-                'email'=>$request->email,
-                'birthData'=>$request->birthData,] );
+            $Customer = Customer::create([
+                'socialReason' => $request->socialReason,
+                'fantasyName' => $request->fantasyName,
+                'cnpj' => $request->cnpj,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'birthData' => $request->birthData,
+            ]);
 
-          AddresseCustomer::create([
-                'cep'=>$request->cep,
-                'logradouro'=>$request->logradouro,
-                'number'=>$request->number,
-                'Complement'=>$request->Complement,
-                'City'=>$request->City,
-                'uf'=>$request->uf,
-                'fk_customer'=>$Customer->id,
-                ] );
-                return response()->json(Customer::with('AddresseCustomers')->find($Customer->id), 201);
+            AddresseCustomer::create([
+                'cep' => $request->cep,
+                'logradouro' => $request->logradouro,
+                'number' => $request->number,
+                'Complement' => $request->Complement,
+                'City' => $request->City,
+                'uf' => $request->uf,
+                'fk_customer' => $Customer->id,
+            ]);
+            return response()->json(Customer::with('AddresseCustomers')->find($Customer->id), 201);
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -76,8 +79,8 @@ class CustomerController extends Controller
     {
         try {
 
-            $Customer=Customer::with('AddresseCustomers')->find($id);
-                return  response()->json(($Customer),200);
+            $Customer = Customer::with('AddresseCustomers')->find($id);
+            return  response()->json(($Customer), 200);
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -98,15 +101,16 @@ class CustomerController extends Controller
 
         try {
 
-            $Customer=Customer::find($id)->update([
-                'socialReason'=>$request->socialReason,
-                'fantasyName'=>$request->fantasyName,
-                'cnpj'=>$request->cnpj,
-                'phone'=>$request->phone,
-                'email'=>$request->email,
-                'birthData'=>$request->birthData,] );
+            $Customer = Customer::find($id)->update([
+                'socialReason' => $request->socialReason,
+                'fantasyName' => $request->fantasyName,
+                'cnpj' => $request->cnpj,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'birthData' => $request->birthData,
+            ]);
 
-                return response()->json(Customer::find($id), 200);
+            return response()->json(Customer::find($id), 200);
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -125,10 +129,10 @@ class CustomerController extends Controller
     {
         try {
 
-            $Customer=Customer::find($id)->delete();
+            $Customer = Customer::find($id)->delete();
             return response()->json([
                 "message" => "data deleted successfully"
-            ],200);
+            ], 200);
         } catch (\Throwable $th) {
 
             return response()->json([

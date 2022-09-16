@@ -16,8 +16,8 @@ class AddresseCustomerController extends Controller
     public function index()
     {
         try {
-            $AddresseCustomers = AddresseCustomer::with('Customers')->OrderBy('CEP', 'asc')->paginate(8);
-            return response()->json($AddresseCustomers, 200);
+            $addresseCustomers = AddresseCustomer::with('Customers')->OrderBy('CEP', 'asc')->paginate(8);
+            return response()->json($addresseCustomers, 200);
         } catch (\Throwable $th) {
 
             return response()->json([
@@ -66,12 +66,12 @@ class AddresseCustomerController extends Controller
 
         try {
 
-            $AddresseCustomer=AddresseCustomer::with('Customers')->find($id);
-                return  response()->json(($AddresseCustomer),200);
+            $addresseCustomer=AddresseCustomer::with('Customers')->find($id);
+                return  response()->json(($addresseCustomer),200);
         } catch (\Throwable $th) {
 
             return response()->json([
-                "message" => "Unable to register customer address"
+                "message" => "Unable to register addresses customer"
             ], 400);
         }
     }
